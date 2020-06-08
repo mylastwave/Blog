@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>todolist</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.css">
+    <script src="/static/js/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1 class="title" style="padding-bottom: 20px">My TodoList</h1>
+    <div class="todobox">
+        <div class="col-md-6 col-md-offset-3 input-group">
+            <input type="text" v-model="todotext" class="form-control" placeholder="Add One..."
+                   @keydown.enter="addtodo(todotext)">
+            <span class="input-group-btn">
+                <button class="btn btn-default" type="button" @click="addtodo(todotext)">添加</button>
+            </span>
+        </div>
+        <div class="col-md-6 col-md-offset-3" v-if="is_requested">
+            <ul class="todolist" v-if="todos.length">
+                <li v-for="todo in todos">[[ todo.content ]]<a href="" class="del" @click="removetodo(todo.todo_id)">×</a></li>
+            </ul>
+            <p v-else>所有任务都完成了，不错哟！</p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: {
+            todotext: '',
+            todos: [],
+            is_requested: false,
+        },
+        mounted () {
+            axios.get('/todolist/get_todos',)
+            .then(function (response) {
+                vm.$data.todos = response['data'];
+                vm.$data.is_requested = true;
+            })
+        },
+        methods: {
+            addtodo(todotext) {
+                {#let todo_id = null;#}
+                {#if (this.todos.length) {#}
+                {#    todo_id = this.todos.slice(-1)[0].id + 1;#}
+                {#    this.todos.push({#}
+                {#        id: todo_id,#}
+                {#        content: this.todotext#}
+                {#    });#}
+                {#/} else {#}
+                {#    todo_id = 0;#}
+                {#    this.todos.push({id: 0, content: this.todotext})#}
+                {#/}#}
+                {#this.todotext = '';#}
+                axios.get('/todolist/create_todo', {
+                    params: {
+                        content: todotext
+                    }
+                })
+                .then(function (response) {
+                    vm.$data.todotext = '';
+                    vm.$data.todos = response['data'];
+                });
+            },
+            removetodo(todo_id) {
+                axios.get('/todolist/del_todo', {
+                    params: {
+                        todo_id: todo_id,
+                    }
+                })
+                    .then(function (response) {
+                        vm.$data.todos = response['data'];
+                    })
+            }
+        }
+    });
+</script>
+<style>
+    body {
+        margin: 50px;
+    }
+
+    .title {
+        color: #008000;
+        text-align: center;
+    }
+
+    p {
+        color: #008000;
+        font-size: 24px;
+    }
+
+    .todobox {
+        text-align: center;
+    }
+
+    .input-group {
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    ul {
+        padding: 0;
+    }
+
+    li {
+        line-height: 100%;
+        padding: 0;
+        margin-bottom: 15px;
+    }
+
+    .todolist {
+        text-align: left;
+    }
+
+    .del {
+        float: right;
+        font-size: 16px;
+    }
+</style>
+</body>
+</html>

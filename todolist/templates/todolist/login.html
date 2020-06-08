@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-theme.css">
+    <script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/static/js/bootstrap.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.register_btn').click(function () {
+                window.location.replace('/todolist/register');
+            });
+
+            $('.login_btn').click(function () {
+                $.ajax({
+                    url: '/login_check/',
+                    type: 'POST',
+                    data: {
+                        'email': $('.email').val(),
+                        'pwd': $('.pwd').val(),
+                    },
+                    timeout: 5000,
+                    success: function (response) {
+                        if (response === 'email_non') {
+                            alert('邮箱不存在！');
+                            return;
+                        }
+                        if (response === 'wrong') {
+                            alert('邮箱或密码错误！');
+                            return;
+                        }
+                        window.location.replace('/todolist');
+                    }
+                })
+            });
+        })
+    </script>
+
+    <style type="text/css">
+        body {
+            margin: 50px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="box container">
+    <div class="jumbotron">
+        <h2>frl的网站登录</h2>
+        <form class="form-horizontal">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">邮箱</label>
+                <div class="col-sm-10">
+                    <input type="email" class="email email_box form-control" id="inputEmail3" name="email"
+                           placeholder="邮箱">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="pwd pwd_box form-control" id="inputPassword3" name="pwd"
+                           placeholder="密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="login_btn btn btn-primary" style="">登录</button>
+                    <div style="float: right">
+                        <strong>没有账号？点这里 </strong>
+                        <button type="button" class="register_btn btn btn-primary">注册</button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

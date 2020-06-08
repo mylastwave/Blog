@@ -1,0 +1,43 @@
+{% extends 'personalBlog/base.html' %}
+
+
+{% block title %}
+<title>frl的博客主页</title>
+{% endblock %}
+
+
+{% block style %}
+    <style type="text/css">
+        body {
+            margin: 50px;
+        }
+        .blog_title {
+            text-decoration: none;
+            color: #0e84b5;
+            font-size: 20px;
+        }
+        .blog_title:hover, .blog_title:active {
+            text-decoration: none;
+            font-size: 20px;
+        }
+    </style>
+{% endblock %}
+
+
+{% block body %}
+    <div>
+        {% for blog in blogs %}
+            <div class="well well-lg">
+                <a class="blog_title" href="/article?id={{ blog.id }}">{{ blog.title }}</a>
+                <div>
+                    <p>{{ blog.content|safe }}</p>
+                </div>
+                <div>
+                    <span>发布于&nbsp;&nbsp;{{ blog.date|date }}</span>
+                    <span>&nbsp;&nbsp;&nbsp;浏览数&nbsp;&nbsp;{{ blog.look_num }}</span>
+                    <span>&nbsp;&nbsp;&nbsp;评论数&nbsp;&nbsp;{{ blog.comment_num }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

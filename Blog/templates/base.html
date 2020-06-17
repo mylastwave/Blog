@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+
+
+    {% block title %}
+    {% endblock %}
+
+
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/bootstrap.css">
+    <link rel="stylesheet" href="http://127.0.0.1:8000/static/css/bootstrap-theme.css">
+    <script type="text/javascript" src="http://127.0.0.1:8000/static/js/jquery-1.12.4.min.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8000/static/js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8000/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8000/static/js/bootstrap.js"></script>
+
+
+{% block script %}
+{% endblock %}
+
+
+</head>
+
+<style type="text/css">
+    .owner {
+        text-decoration: none;
+        color: #0f0f0f;
+    }
+    .owner:hover {
+        text-decoration: none;
+        color: #6a7b7d;
+    }
+</style>
+{% block style %}
+{% endblock %}
+
+<body>
+{% block header %}
+    <div class="page-header">
+        <h2><b><a class="owner" href="http://127.0.0.1:8000">frl的博客</a></b></h2>
+    </div>
+{% endblock %}
+
+
+{% block body %}
+{% endblock %}
+</body>
+
+</html>
